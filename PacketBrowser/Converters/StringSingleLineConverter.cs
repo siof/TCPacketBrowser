@@ -1,4 +1,5 @@
 ﻿using System;
+using WpfCommons.Extensions;
 
 namespace PacketBrowser.Converters
 {

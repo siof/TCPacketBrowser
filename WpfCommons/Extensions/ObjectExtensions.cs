@@ -6,9 +6,7 @@ namespace WpfCommons.Extensions
     {
         public static string ToStringSafe(this object obj)
         {
-            obj.IfNotNull(o =>
-            {
-            });
+            return obj.IfNotNull(o => o.ToString(), null);
         }
 
         public static TInput IfNotNull<TInput>(this TInput obj, Action<TInput> evaluator)
