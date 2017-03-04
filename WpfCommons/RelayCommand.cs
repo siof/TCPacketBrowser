@@ -79,6 +79,8 @@ namespace WpfCommons
                     {
                         return (_canExecute.Execute((T)parameter));
                     }
+
+                    return _canExecute.Execute();
                 }
 
                 return false;

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using PacketBrowser.ViewModels;
+using System.Windows;
 
 namespace PacketBrowser
 {
@@ -9,6 +10,7 @@ namespace PacketBrowser
     {
         public MainWindow()
         {
+            DataContext = new PacketBrowserViewModel();
             InitializeComponent();
         }
     }
