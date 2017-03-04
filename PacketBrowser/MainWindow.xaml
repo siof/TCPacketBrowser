@@ -55,7 +55,7 @@
             SelectedItem="{Binding SelectedPacket}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border>
+                    <Border Margin="5">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
