@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PacketBrowser"
-        
+
         xmlns:res="clr-namespace:PacketBrowser.Properties"
-        
+
         mc:Ignorable="d"
         Title="Packet Browser" Height="700" Width="1200">
     <Grid>
@@ -33,7 +33,7 @@
             Grid.Row="1"
             Grid.Column="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -64,7 +64,7 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition SharedSizeGroup="lvFirst" />
-                                <ColumnDefinition SharedSizeGroup="lvSecond"/>
+                                <ColumnDefinition SharedSizeGroup="lvSecond" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -101,6 +101,6 @@
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             IsReadOnly="True"
             Text="{Binding SelectedPacket, StringFormat={}{0}}"
-            TextWrapping="Wrap"/>
+            TextWrapping="Wrap" />
     </Grid>
 </Window>
