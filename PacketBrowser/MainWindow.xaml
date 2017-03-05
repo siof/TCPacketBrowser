@@ -22,7 +22,7 @@
             Grid.Row="0"
             Grid.Column="0">
             <Button
-                Content="załaduj"
+                Content="Load sniff"
                 Command="{Binding LoadPacketsCommand}" />
         </StackPanel>
 
@@ -35,6 +35,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBox
+                ToolTip="Search by either opcode name or by value. For example, you can search for all results with entry 12345 or just type SMSG_UPDATE_OBJECT"
                 Grid.Column="0"
                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
@@ -44,7 +45,7 @@
 
             <Button
                 Grid.Column="1"
-                Content="szukaj"
+                Content="Search"
                 Command="{Binding SearchCommand}" />
         </Grid>
 
