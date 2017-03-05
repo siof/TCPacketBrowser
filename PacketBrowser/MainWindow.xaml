@@ -87,8 +87,9 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <TextBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+        <TextBox
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
             Grid.Column="2"
             Grid.Row="0"
             Grid.RowSpan="3"
