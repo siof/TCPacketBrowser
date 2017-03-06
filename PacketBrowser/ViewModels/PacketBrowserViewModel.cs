@@ -1,10 +1,8 @@
 ﻿using Microsoft.Win32;
 using PacketBrowser.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -16,7 +14,7 @@ namespace PacketBrowser.ViewModels
 {
     public class PacketBrowserViewModel : ViewModelBase
     {
-        public PacketBrowserViewModel():
+        public PacketBrowserViewModel() :
             base()
         {
             _packetDefinitions = new DispatchedObservableCollection<PacketDefinition>();
@@ -25,6 +23,7 @@ namespace PacketBrowser.ViewModels
         }
 
         private string _searchText;
+
         public string SearchText
         {
             get
@@ -43,6 +42,7 @@ namespace PacketBrowser.ViewModels
         }
 
         private DispatchedObservableCollection<PacketDefinition> _packetDefinitions;
+
         public DispatchedObservableCollection<PacketDefinition> PacketDefinitions
         {
             get
@@ -54,6 +54,7 @@ namespace PacketBrowser.ViewModels
         public ICollectionView PacketDefinitionsView { get; private set; }
 
         private PacketDefinition _selectedPacket;
+
         public PacketDefinition SelectedPacket
         {
             get
@@ -71,7 +72,6 @@ namespace PacketBrowser.ViewModels
             }
         }
 
-
         private bool PacketListFilter(object obj)
         {
             return (obj as PacketDefinition).IfNotNull(definition =>
@@ -88,7 +88,8 @@ namespace PacketBrowser.ViewModels
 
         #region Search
 
-        RelayCommand<object> _searchCommand;
+        private RelayCommand<object> _searchCommand;
+
         public ICommand SearchCommand
         {
             get
@@ -100,22 +101,23 @@ namespace PacketBrowser.ViewModels
                 return _searchCommand;
             }
         }
-        void SearchCommandExecute(object param)
+
+        private void SearchCommandExecute(object param)
         {
             PacketDefinitionsView.Refresh();
         }
 
-
-        bool SearchCommandCanExecute(object param)
+        private bool SearchCommandCanExecute(object param)
         {
             return true;
         }
 
-        #endregion
+        #endregion Search
 
         #region LoadPacket
 
-        RelayCommand<object> _loadPacketsCommand;
+        private RelayCommand<object> _loadPacketsCommand;
+
         public ICommand LoadPacketsCommand
         {
             get
@@ -135,7 +137,7 @@ namespace PacketBrowser.ViewModels
             Data
         }
 
-        void LoadPacketCommandExecute(object param)
+        private void LoadPacketCommandExecute(object param)
         {
             OpenFileDialog dialog = new OpenFileDialog();
 
@@ -144,6 +146,7 @@ namespace PacketBrowser.ViewModels
                 Task.Run(() =>
                 {
                     IsLoading = true;
+                    PacketDefinitions.Clear();
                     try
                     {
                         using (var stream = dialog.OpenFile())
@@ -184,7 +187,7 @@ namespace PacketBrowser.ViewModels
                                                 definition.PacketHash = data[2].Trim('(').Trim(')');
                                                 definition.Length = int.Parse(data[4]);
                                                 definition.ConnIdx = int.Parse(data[6]);
-                                                definition.Time = DateTime.Parse(string.Format("{0} {1}", data[8], data[9]));
+                                                definition.Time = DateTime.ParseExact(data[8], "mm/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture) + TimeSpan.Parse(data[9]);
                                                 definition.Number = int.Parse(data[11]);
                                                 mode = StreamMode.Data;
                                                 break;
@@ -194,7 +197,6 @@ namespace PacketBrowser.ViewModels
                                                 dataBuilder.AppendLine(line);
                                                 break;
                                             }
-
                                     }
                                 }
                             }
@@ -202,7 +204,6 @@ namespace PacketBrowser.ViewModels
                     }
                     catch (Exception)
                     {
-
                     }
                     finally
                     {
@@ -212,11 +213,11 @@ namespace PacketBrowser.ViewModels
             }
         }
 
-        bool LoadPacketCommandCanExecute(object param)
+        private bool LoadPacketCommandCanExecute(object param)
         {
             return true;
         }
 
-        #endregion
+        #endregion LoadPacket
     }
 }

@@ -55,16 +55,24 @@
         <ListView
             Grid.Column="0"
             Grid.Row="2"
-            Grid.IsSharedSizeScope="True"
             ItemsSource="{Binding PacketDefinitionsView}"
             SelectedItem="{Binding SelectedPacket}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border Margin="5">
-                        <Grid>
+                    <Border
+                        HorizontalAlignment="Stretch"
+                        BorderThickness="0.5"
+                        BorderBrush="Black">
+                        <Grid
+                            Margin="5">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition SharedSizeGroup="lvFirst" />
-                                <ColumnDefinition SharedSizeGroup="lvSecond" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -73,9 +81,13 @@
 
                             <TextBlock
                                 Grid.Column="0"
-                                Grid.ColumnSpan="2"
                                 Grid.Row="0"
-                                Text="{Binding Time}" />
+                                Text="{Binding Time, StringFormat={}{0:yyyy-MM-dd HH:mm:ss.fff}}" />
+
+                            <TextBlock
+                                Grid.Column="1"
+                                Grid.Row="0"
+                                Text="{Binding Number}" />
 
                             <TextBlock
                                 Grid.Column="0"
@@ -85,7 +97,6 @@
                             <TextBlock
                                 Grid.Column="1"
                                 Grid.Row="1"
-                                Padding="10 0 0 0"
                                 Text="{Binding PacketHash}" />
                         </Grid>
                     </Border>
