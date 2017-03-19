@@ -61,11 +61,38 @@ namespace PacketBrowser.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Searches header for containing given text (header is first line in packet details).
+        /// </summary>
+        public static string STR_HeaderSearchTooltip {
+            get {
+                return ResourceManager.GetString("STR_HeaderSearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load sniff.
         /// </summary>
         public static string STR_LoadSniff {
             get {
                 return ResourceManager.GetString("STR_LoadSniff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching is done checking if packet data contains given text.
+        /// </summary>
+        public static string STR_PacketContainsDesc {
+            get {
+                return ResourceManager.GetString("STR_PacketContainsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching is done checking if packet matches given regex.
+        /// </summary>
+        public static string STR_RegexDesc {
+            get {
+                return ResourceManager.GetString("STR_RegexDesc", resourceCulture);
             }
         }
         
@@ -79,12 +106,23 @@ namespace PacketBrowser.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search by either opcode name or by value. 
-        ///For example, you can search for all results with entry 12345 or just type SMSG_UPDATE_OBJECT.
+        ///   Looks up a localized string similar to Searching depends on search type:
+        ///Simple contains - searching is done checking if packet contains given text
+        ///Packet contains - searching is done checking if packet data contains given text
+        ///Regex - searching is done checking if packet matches given regex.
         /// </summary>
         public static string STR_SearchTooltip {
             get {
                 return ResourceManager.GetString("STR_SearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching is done checking if packet contains given text.
+        /// </summary>
+        public static string STR_SimpleContainsDesc {
+            get {
+                return ResourceManager.GetString("STR_SimpleContainsDesc", resourceCulture);
             }
         }
     }

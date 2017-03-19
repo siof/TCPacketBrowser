@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -14,15 +15,60 @@ namespace PacketBrowser.ViewModels
 {
     public class PacketBrowserViewModel : ViewModelBase
     {
+        private string _headerSearchText;
+        private string _searchText;
+        private SearchMode _searchingMode;
+        private PacketDefinition _selectedPacket;
+
         public PacketBrowserViewModel() :
             base()
         {
-            _packetDefinitions = new DispatchedObservableCollection<PacketDefinition>();
+            PacketDefinitions = new DispatchedObservableCollection<PacketDefinition>();
             PacketDefinitionsView = CollectionViewSource.GetDefaultView(PacketDefinitions);
             PacketDefinitionsView.Filter = PacketListFilter;
         }
 
-        private string _searchText;
+        public Array AvailableSearchModes
+        {
+            get
+            {
+                return Enum.GetValues(typeof(SearchMode));
+            }
+        }
+
+        public SearchMode SearchingMode
+        {
+            get
+            {
+                return _searchingMode;
+            }
+
+            set
+            {
+                if (_searchingMode != value)
+                {
+                    _searchingMode = value;
+                    OnPropertyChanged(() => SearchingMode);
+                }
+            }
+        }
+
+        public string HeaderSearchText
+        {
+            get
+            {
+                return _headerSearchText;
+            }
+
+            set
+            {
+                if (_headerSearchText != value)
+                {
+                    _headerSearchText = value;
+                    OnPropertyChanged(() => HeaderSearchText);
+                }
+            }
+        }
 
         public string SearchText
         {
@@ -41,19 +87,9 @@ namespace PacketBrowser.ViewModels
             }
         }
 
-        private DispatchedObservableCollection<PacketDefinition> _packetDefinitions;
-
-        public DispatchedObservableCollection<PacketDefinition> PacketDefinitions
-        {
-            get
-            {
-                return _packetDefinitions;
-            }
-        }
+        public DispatchedObservableCollection<PacketDefinition> PacketDefinitions { get; private set; }
 
         public ICollectionView PacketDefinitionsView { get; private set; }
-
-        private PacketDefinition _selectedPacket;
 
         public PacketDefinition SelectedPacket
         {
@@ -76,11 +112,49 @@ namespace PacketBrowser.ViewModels
         {
             return (obj as PacketDefinition).IfNotNull(definition =>
             {
-                if (SearchText.IsEmptyOrWhiteSpace())
-                    return true;
+                switch (SearchingMode)
+                {
+                    case SearchMode.SimpleContains:
+                        {
+                            if (SearchText.IsEmptyOrWhiteSpace())
+                                return true;
 
-                if (definition.ToString().ToLower().Contains(SearchText.ToLower()))
-                    return true;
+                            if (definition.ToString().ToLower().Contains(SearchText.ToLower()))
+                                return true;
+
+                            break;
+                        }
+
+                    case SearchMode.PacketContains:
+                        {
+                            if (HeaderSearchText.IsEmptyOrWhiteSpace())
+                                return true;
+
+                            if (SearchText.IsEmptyOrWhiteSpace())
+                                return true;
+
+                            if (definition.PacketHeader.ToLower().Contains(HeaderSearchText.ToLower()))
+                            {
+                                if (SearchText.IsEmptyOrWhiteSpace() || definition.PacketData.ToLower().Contains(SearchText.ToLower()))
+                                    return true;
+                            }
+
+                            break;
+                        }
+
+                    case SearchMode.Regex:
+                        {
+                            Regex regex = new Regex(SearchText);
+                            try
+                            {
+                                return regex.IsMatch(definition.ToString());
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            break;
+                        }
+                }
 
                 return false;
             }, false);
@@ -116,6 +190,12 @@ namespace PacketBrowser.ViewModels
 
         #region LoadPacket
 
+        private enum StreamMode
+        {
+            Header,
+            Data
+        }
+
         private RelayCommand<object> _loadPacketsCommand;
 
         public ICommand LoadPacketsCommand
@@ -129,12 +209,6 @@ namespace PacketBrowser.ViewModels
                 }
                 return _loadPacketsCommand;
             }
-        }
-
-        private enum StreamMode
-        {
-            Header,
-            Data
         }
 
         private void LoadPacketCommandExecute(object param)

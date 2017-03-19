@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PacketBrowser"
+        xmlns:conv="clr-namespace:PacketBrowser.Converters"
 
         xmlns:res="clr-namespace:PacketBrowser.Properties"
 
@@ -23,22 +24,52 @@
 
         <StackPanel
             Grid.Row="0"
-            Grid.Column="0">
+            Grid.Column="0"
+            Orientation="Vertical">
+
             <Button
                 Content="{x:Static res:Resources.STR_LoadSniff}"
                 Command="{Binding LoadPacketsCommand}" />
+
+            <ComboBox
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                IsEditable="False"
+                ItemsSource="{Binding AvailableSearchModes}"
+                SelectedItem="{Binding SearchingMode}" />
         </StackPanel>
 
         <Grid
             Grid.Row="1"
             Grid.Column="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <TextBox
+                TabIndex="0"
                 Grid.Column="0"
+                Grid.Row="0"
+                ToolTip="{x:Static res:Resources.STR_HeaderSearchTooltip}"
+                Text="{Binding HeaderSearchText, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding SearchingMode, Converter={conv:EqualsToVisibilityConverter}, ConverterParameter={x:Static local:Models.SearchMode.PacketContains}}">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return" Command="{Binding SearchCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+
+            <TextBox
+                TabIndex="1"
+                Grid.Column="0"
+                Grid.Row="1"
                 ToolTip="{x:Static res:Resources.STR_SearchTooltip}"
                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
@@ -47,7 +78,9 @@
             </TextBox>
 
             <Button
+                TabIndex="2"
                 Grid.Column="1"
+                Grid.Row="1"
                 Content="{x:Static res:Resources.STR_Search}"
                 Command="{Binding SearchCommand}" />
         </Grid>

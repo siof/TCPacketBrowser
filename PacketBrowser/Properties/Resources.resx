@@ -117,14 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="STR_HeaderSearchTooltip" xml:space="preserve">
+    <value>Searches header for containing given text (header is first line in packet details)</value>
+  </data>
   <data name="STR_LoadSniff" xml:space="preserve">
     <value>Load sniff</value>
+  </data>
+  <data name="STR_PacketContainsDesc" xml:space="preserve">
+    <value>Searching is done checking if packet data contains given text</value>
+  </data>
+  <data name="STR_RegexDesc" xml:space="preserve">
+    <value>Searching is done checking if packet matches given regex</value>
   </data>
   <data name="STR_Search" xml:space="preserve">
     <value>Search</value>
   </data>
   <data name="STR_SearchTooltip" xml:space="preserve">
-    <value>Search by either opcode name or by value. 
-For example, you can search for all results with entry 12345 or just type SMSG_UPDATE_OBJECT</value>
+    <value>Searching depends on search type:
+Simple contains - searching is done checking if packet contains given text
+Packet contains - searching is done checking if packet data contains given text
+Regex - searching is done checking if packet matches given regex</value>
+  </data>
+  <data name="STR_SimpleContainsDesc" xml:space="preserve">
+    <value>Searching is done checking if packet contains given text</value>
   </data>
 </root>

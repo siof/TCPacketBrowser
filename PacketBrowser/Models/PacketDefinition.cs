@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WpfCommons;
 
 namespace PacketBrowser.Models
@@ -10,6 +6,7 @@ namespace PacketBrowser.Models
     public class PacketDefinition : ViewModelBase
     {
         private PacketDirection _direction;
+
         public PacketDirection Direction
         {
             get
@@ -27,8 +24,8 @@ namespace PacketBrowser.Models
             }
         }
 
-
         private string _packetName;
+
         public string PacketName
         {
             get
@@ -47,6 +44,7 @@ namespace PacketBrowser.Models
         }
 
         private string _packetHash;
+
         public string PacketHash
         {
             get
@@ -65,6 +63,7 @@ namespace PacketBrowser.Models
         }
 
         private int _length;
+
         public int Length
         {
             get
@@ -83,6 +82,7 @@ namespace PacketBrowser.Models
         }
 
         private int _connIdx;
+
         public int ConnIdx
         {
             get
@@ -101,6 +101,7 @@ namespace PacketBrowser.Models
         }
 
         private DateTime _time;
+
         public DateTime Time
         {
             get
@@ -119,6 +120,7 @@ namespace PacketBrowser.Models
         }
 
         private int _number;
+
         public int Number
         {
             get
@@ -137,6 +139,7 @@ namespace PacketBrowser.Models
         }
 
         private string _packetData;
+
         public string PacketData
         {
             get
@@ -154,10 +157,18 @@ namespace PacketBrowser.Models
             }
         }
 
+        public string PacketHeader
+        {
+            get
+            {
+                return string.Format("{0}: {1} ({2}) Length: {3} ConnIdx: {4} Time: {5} Number: {6}", Direction, PacketName, PacketHash, Length, ConnIdx, Time, Number);
+            }
+        }
+
         public override string ToString()
         {
-            return string.Format("{0}: {1} ({2}) Length: {3} ConnIdx: {4} Time: {5} Number: {6}{7}{8}",
-                Direction, PacketName, PacketHash, Length, ConnIdx, Time, Number, Environment.NewLine, PacketData);
+            return string.Format("{0}{1}{2}",
+                PacketHeader, Environment.NewLine, PacketData);
         }
     }
 }

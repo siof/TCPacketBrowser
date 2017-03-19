@@ -70,8 +70,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\EqualsToVisibilityConverter.cs" />
     <Compile Include="Models\PacketDefinition.cs" />
     <Compile Include="Models\PacketDirection.cs" />
+    <Compile Include="Models\SearchMode.cs" />
     <Compile Include="ViewModels\PacketBrowserViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
