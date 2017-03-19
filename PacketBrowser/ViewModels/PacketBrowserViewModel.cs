@@ -183,7 +183,7 @@ namespace PacketBrowser.ViewModels
 
         private bool SearchCommandCanExecute(object param)
         {
-            return true;
+            return !IsLoading;
         }
 
         #endregion Search
@@ -238,7 +238,10 @@ namespace PacketBrowser.ViewModels
                                     if (line.StartsWith("#"))
                                         continue;
 
-                                    if (line.IsEmptyOrWhiteSpace())
+                                    if (mode == StreamMode.Header && line.IsEmptyOrWhiteSpace())
+                                        continue;
+
+                                    if (line.StartsWith("ServerToClient") || line.StartsWith("ClientToServer"))
                                     {
                                         definition.PacketData = dataBuilder.ToString();
                                         dataBuilder.Clear();
@@ -248,7 +251,6 @@ namespace PacketBrowser.ViewModels
 
                                         definition = new PacketDefinition();
                                         mode = StreamMode.Header;
-                                        continue;
                                     }
 
                                     switch (mode)
