@@ -3,9 +3,9 @@ using System.Windows.Input;
 
 namespace WpfCommons.Behaviours
 {
-    public static class DropBehavior
+    public static class DropBehaviour
     {
-        private static readonly DependencyProperty DropCommandProperty = DependencyProperty.RegisterAttached( "DropCommand", typeof(ICommand), typeof(DropBehavior), new PropertyMetadata(DropCommandChanged) );
+        private static readonly DependencyProperty DropCommandProperty = DependencyProperty.RegisterAttached( "DropCommand", typeof(ICommand), typeof(DropBehaviour), new PropertyMetadata(DropCommandChanged) );
 
         public static void SetDropCommand(this UIElement element, ICommand command)
         {

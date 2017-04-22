@@ -9,7 +9,7 @@
         xmlns:beh="clr-namespace:WpfCommons.Behaviours;assembly=WpfCommons"
         
         mc:Ignorable="d"
-        AllowDrop="true" beh:DropBehavior.DropCommand="{Binding LoadPacketsCommand}"
+        AllowDrop="true" beh:DropBehaviour.DropCommand="{Binding LoadPacketsCommand}"
         Title="Packet Browser" Height="700" Width="1200">
     <Window.Style>
         <Style TargetType="Window">
