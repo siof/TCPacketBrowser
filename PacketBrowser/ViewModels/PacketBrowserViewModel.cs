@@ -8,6 +8,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using WpfCommons;
@@ -215,104 +216,121 @@ namespace PacketBrowser.ViewModels
 
         private void LoadPacketCommandExecute(object param)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            string fileName = null;
 
-            if (dialog.ShowDialog().GetValueOrDefault(false))
+            if (param != null)
             {
-                Task.Run(() =>
+                var data = (param as IDataObject);
+                if (data.GetDataPresent(DataFormats.FileDrop))
                 {
-                    Stopwatch watch = new Stopwatch();
-                    watch.Start();
+                    fileName = (data.GetData(DataFormats.FileDrop) as string[])[0];
+                }
+            }
 
-                    IsLoading = true;
-                    IsLoadingInfoText = Properties.Resources.STR_Loading;
+            if (string.IsNullOrEmpty(fileName))
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
 
-                    PacketDefinitions.Clear();
+                var result = dialog.ShowDialog().GetValueOrDefault(false);
+                if (!result)
+                    return;
 
-                    LinkedList<PacketDefinition> definitions = new LinkedList<PacketDefinition>();
+                fileName = dialog.FileName;
+            }
 
-                    try
+            Task.Run(() =>
+            {
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
+
+                IsLoading = true;
+                IsLoadingInfoText = Properties.Resources.STR_Loading;
+
+                PacketDefinitions.Clear();
+
+                LinkedList<PacketDefinition> definitions = new LinkedList<PacketDefinition>();
+
+                try
+                {
+                    int counter = 0;
+                    using (var stream = File.Open(fileName, FileMode.Open))
                     {
-                        int counter = 0;
-                        using (var stream = dialog.OpenFile())
+                        using (var reader = new StreamReader(stream))
                         {
-                            using (var reader = new StreamReader(stream))
+                            var definition = new PacketDefinition();
+                            StreamMode mode = StreamMode.Header;
+                            StringBuilder dataBuilder = new StringBuilder();
+
+                            while (!reader.EndOfStream)
                             {
-                                var definition = new PacketDefinition();
-                                StreamMode mode = StreamMode.Header;
-                                StringBuilder dataBuilder = new StringBuilder();
+                                var line = reader.ReadLine();
 
-                                while (!reader.EndOfStream)
+                                if (line.StartsWith("#"))
+                                    continue;
+
+                                if (mode == StreamMode.Header && line.IsEmptyOrWhiteSpace())
+                                    continue;
+
+                                if (line.StartsWith("ServerToClient") || line.StartsWith("ClientToServer"))
                                 {
-                                    var line = reader.ReadLine();
+                                    definition.PacketData = dataBuilder.ToString();
+                                    dataBuilder.Clear();
 
-                                    if (line.StartsWith("#"))
-                                        continue;
-
-                                    if (mode == StreamMode.Header && line.IsEmptyOrWhiteSpace())
-                                        continue;
-
-                                    if (line.StartsWith("ServerToClient") || line.StartsWith("ClientToServer"))
+                                    if (definition.PacketName.IsNotEmptyOrWhiteSpace())
                                     {
-                                        definition.PacketData = dataBuilder.ToString();
-                                        dataBuilder.Clear();
+                                        definitions.AddLast(definition);
 
-                                        if (definition.PacketName.IsNotEmptyOrWhiteSpace())
+                                        if (++counter >= 2500)
                                         {
-                                            definitions.AddLast(definition);
-
-                                            if (++counter >= 2500)
-                                            {
-                                                IsLoadingInfoText = string.Format("{0}: {1}", Properties.Resources.STR_Loading, definitions.Count);
-                                                counter = 0;
-                                            }
+                                            IsLoadingInfoText = string.Format("{0}: {1}", Properties.Resources.STR_Loading, definitions.Count);
+                                            counter = 0;
                                         }
-
-                                        definition = new PacketDefinition();
-                                        mode = StreamMode.Header;
                                     }
 
-                                    switch (mode)
-                                    {
-                                        case StreamMode.Header:
-                                            {
-                                                var data = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                                                definition.Direction = data[0].Trim(':') == "ServerToClient" ? PacketDirection.ServerToClient : PacketDirection.ClientToServer;
-                                                definition.PacketName = data[1];
-                                                definition.PacketHash = data[2].Trim('(').Trim(')');
-                                                definition.Length = int.Parse(data[4]);
-                                                definition.ConnIdx = int.Parse(data[6]);
-                                                definition.Time = DateTime.ParseExact(data[8], "mm/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture) + TimeSpan.Parse(data[9]);
-                                                definition.Number = int.Parse(data[11]);
-                                                mode = StreamMode.Data;
-                                                break;
-                                            }
-                                        case StreamMode.Data:
-                                            {
-                                                dataBuilder.AppendLine(line);
-                                                break;
-                                            }
-                                    }
+                                    definition = new PacketDefinition();
+                                    mode = StreamMode.Header;
                                 }
 
-                                IsLoadingInfoText = string.Format("{0}: {1}", Properties.Resources.STR_Loaded, definitions.Count);
+                                switch (mode)
+                                {
+                                    case StreamMode.Header:
+                                        {
+                                            var data = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                                            definition.Direction = data[0].Trim(':') == "ServerToClient" ? PacketDirection.ServerToClient : PacketDirection.ClientToServer;
+                                            definition.PacketName = data[1];
+                                            definition.PacketHash = data[2].Trim('(').Trim(')');
+                                            definition.Length = int.Parse(data[4]);
+                                            definition.ConnIdx = int.Parse(data[6]);
+                                            definition.Time = DateTime.ParseExact(data[8], "mm/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture) + TimeSpan.Parse(data[9]);
+                                            definition.Number = int.Parse(data[11]);
+                                            mode = StreamMode.Data;
+                                            break;
+                                        }
+                                    case StreamMode.Data:
+                                        {
+                                            dataBuilder.AppendLine(line);
+                                            break;
+                                        }
+                                }
                             }
-                        }
 
-                        IsLoadingInfoText = Properties.Resources.STR_PreparingView;
-                        PacketDefinitions.ReplaceAll(definitions);
-                        definitions.Clear();
-                        watch.Stop();
+                            IsLoadingInfoText = string.Format("{0}: {1}", Properties.Resources.STR_Loaded, definitions.Count);
+                        }
                     }
-                    catch (Exception)
-                    {
-                    }
-                    finally
-                    {
-                        IsLoading = false;
-                    }
-                });
-            }
+
+                    IsLoadingInfoText = Properties.Resources.STR_PreparingView;
+                    PacketDefinitions.ReplaceAll(definitions);
+                    definitions.Clear();
+                    watch.Stop();
+                }
+                catch (Exception)
+                {
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+            });
         }
 
         private bool LoadPacketCommandCanExecute(object param)

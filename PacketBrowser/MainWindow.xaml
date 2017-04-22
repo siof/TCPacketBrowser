@@ -3,12 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PacketBrowser"
+        xmlns:models="clr-namespace:PacketBrowser.Models"
         xmlns:conv="clr-namespace:PacketBrowser.Converters"
-
         xmlns:res="clr-namespace:PacketBrowser.Properties"
-
+        xmlns:beh="clr-namespace:WpfCommons.Behaviours;assembly=WpfCommons"
+        
         mc:Ignorable="d"
+        AllowDrop="true" beh:DropBehavior.DropCommand="{Binding LoadPacketsCommand}"
         Title="Packet Browser" Height="700" Width="1200">
     <Window.Style>
         <Style TargetType="Window">
@@ -100,7 +101,7 @@
                 Grid.Row="0"
                 ToolTip="{x:Static res:Resources.STR_HeaderSearchTooltip}"
                 Text="{Binding HeaderSearchText, UpdateSourceTrigger=PropertyChanged}"
-                Visibility="{Binding SearchingMode, Converter={conv:EqualsToVisibilityConverter}, ConverterParameter={x:Static local:Models.SearchMode.PacketContains}}">
+                Visibility="{Binding SearchingMode, Converter={conv:EqualsToVisibilityConverter}, ConverterParameter={x:Static models:SearchMode.PacketContains}}">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding SearchCommand}" />
                 </TextBox.InputBindings>
@@ -185,6 +186,6 @@
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             IsReadOnly="True"
             Text="{Binding SelectedPacket, StringFormat={}{0}}"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap"/>
     </Grid>
 </Window>
