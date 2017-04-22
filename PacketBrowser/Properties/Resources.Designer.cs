@@ -70,6 +70,24 @@ namespace PacketBrowser.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loaded.
+        /// </summary>
+        public static string STR_Loaded {
+            get {
+                return ResourceManager.GetString("STR_Loaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string STR_Loading {
+            get {
+                return ResourceManager.GetString("STR_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load sniff.
         /// </summary>
         public static string STR_LoadSniff {
@@ -84,6 +102,15 @@ namespace PacketBrowser.Properties {
         public static string STR_PacketContainsDesc {
             get {
                 return ResourceManager.GetString("STR_PacketContainsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparing view.
+        /// </summary>
+        public static string STR_PreparingView {
+            get {
+                return ResourceManager.GetString("STR_PreparingView", resourceCulture);
             }
         }
         

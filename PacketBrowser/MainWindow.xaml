@@ -10,6 +10,25 @@
 
         mc:Ignorable="d"
         Title="Packet Browser" Height="700" Width="1200">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Window">
+                        <Grid>
+                            <ContentPresenter />
+                            <Grid Visibility="{Binding IsLoading, Converter={conv:BoolToVisibilityConverter}}">
+                                <Grid Background="Gray" Opacity="0.4" />
+                                <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                                    <TextBlock Margin="5 10 5 5" HorizontalAlignment="Center" Text="{Binding IsLoadingInfoText}" FontSize="20" TextAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Style>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

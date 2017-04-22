@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using PacketBrowser.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -219,10 +221,19 @@ namespace PacketBrowser.ViewModels
             {
                 Task.Run(() =>
                 {
+                    Stopwatch watch = new Stopwatch();
+                    watch.Start();
+
                     IsLoading = true;
+                    IsLoadingInfoText = Properties.Resources.STR_Loading;
+
                     PacketDefinitions.Clear();
+
+                    LinkedList<PacketDefinition> definitions = new LinkedList<PacketDefinition>();
+
                     try
                     {
+                        int counter = 0;
                         using (var stream = dialog.OpenFile())
                         {
                             using (var reader = new StreamReader(stream))
@@ -247,7 +258,15 @@ namespace PacketBrowser.ViewModels
                                         dataBuilder.Clear();
 
                                         if (definition.PacketName.IsNotEmptyOrWhiteSpace())
-                                            PacketDefinitions.Add(definition);
+                                        {
+                                            definitions.AddLast(definition);
+
+                                            if (++counter >= 2500)
+                                            {
+                                                IsLoadingInfoText = string.Format("{0}: {1}", Properties.Resources.STR_Loading, definitions.Count);
+                                                counter = 0;
+                                            }
+                                        }
 
                                         definition = new PacketDefinition();
                                         mode = StreamMode.Header;
@@ -275,8 +294,15 @@ namespace PacketBrowser.ViewModels
                                             }
                                     }
                                 }
+
+                                IsLoadingInfoText = string.Format("{0}: {1}", Properties.Resources.STR_Loaded, definitions.Count);
                             }
                         }
+
+                        IsLoadingInfoText = Properties.Resources.STR_PreparingView;
+                        PacketDefinitions.ReplaceAll(definitions);
+                        definitions.Clear();
+                        watch.Stop();
                     }
                     catch (Exception)
                     {

@@ -120,11 +120,20 @@
   <data name="STR_HeaderSearchTooltip" xml:space="preserve">
     <value>Searches header for containing given text (header is first line in packet details)</value>
   </data>
+  <data name="STR_Loaded" xml:space="preserve">
+    <value>Loaded</value>
+  </data>
+  <data name="STR_Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
   <data name="STR_LoadSniff" xml:space="preserve">
     <value>Load sniff</value>
   </data>
   <data name="STR_PacketContainsDesc" xml:space="preserve">
     <value>Searching is done checking if packet data contains given text</value>
+  </data>
+  <data name="STR_PreparingView" xml:space="preserve">
+    <value>Preparing view</value>
   </data>
   <data name="STR_RegexDesc" xml:space="preserve">
     <value>Searching is done checking if packet matches given regex</value>

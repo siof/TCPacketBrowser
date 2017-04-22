@@ -137,6 +137,27 @@ namespace WpfCommons
                 DispatcherInvoke(new Action<IEnumerable<T>, bool>(DoAddRange), items, false);
         }
 
+        public void ReplaceAll(IEnumerable<T> newItems)
+        {
+            if (Thread.CurrentThread == _dispatcher.Thread)
+                DoReplaceAll(newItems, false);
+            else
+                DispatcherInvoke(new Action<IEnumerable<T>, bool>(DoReplaceAll), newItems, false);
+        }
+
+        private void DoReplaceAll(IEnumerable<T> newItems, bool disableNotify)
+        {
+            using (new WriteLock(_collectionLock))
+            {
+                _collection.Clear();
+                _collection = new List<T>(newItems);
+            }
+
+            InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            OnPropertyChanged(() => Count);
+            OnPropertyChanged(() => HasItems);
+        }
+
         public void AddRange(IEnumerable items, bool disableNotify)
         {
             if (Thread.CurrentThread == _dispatcher.Thread)
@@ -170,7 +191,7 @@ namespace WpfCommons
             if (!disableNotify)
                 foreach (var item in itemsT)
                 {
-                    InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
+                    InvokeCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, itemsT));
                 }
 
             OnPropertyChanged(() => Count);
