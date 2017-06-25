@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace PacketBrowser.Converters
+namespace siof.Common.Wpf.Converters
 {
     public abstract class ConverterMarkupExtensionBase<T> : MarkupExtension, IValueConverter where T : class, new()
     {

@@ -1,13 +1,19 @@
 ﻿using System;
-using WpfCommons.Extensions;
+using System.Windows;
 
-namespace PacketBrowser.Converters
+namespace siof.Common.Wpf.Converters
 {
-    public class StringSingleLineConverter : ConverterMarkupExtensionBase<StringSingleLineConverter>
+    public class EqualsToVisibilityConverter : ConverterMarkupExtensionBase<EqualsToVisibilityConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return value.ToStringSafe().ReplaceSafe(Environment.NewLine, " ");
+            if (value == null && parameter == null)
+                return Visibility.Visible;
+
+            if (value.Equals(parameter))
+                return Visibility.Visible;
+
+            return Visibility.Collapsed;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

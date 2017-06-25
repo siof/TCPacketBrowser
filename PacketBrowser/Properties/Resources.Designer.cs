@@ -70,6 +70,15 @@ namespace PacketBrowser.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search in header ....
+        /// </summary>
+        public static string STR_HeaderSearchWatermark {
+            get {
+                return ResourceManager.GetString("STR_HeaderSearchWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loaded.
         /// </summary>
         public static string STR_Loaded {
@@ -141,6 +150,15 @@ namespace PacketBrowser.Properties {
         public static string STR_SearchTooltip {
             get {
                 return ResourceManager.GetString("STR_SearchTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search ....
+        /// </summary>
+        public static string STR_SearchWatermark {
+            get {
+                return ResourceManager.GetString("STR_SearchWatermark", resourceCulture);
             }
         }
         

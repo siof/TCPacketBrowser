@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace PacketBrowser.Converters
+namespace siof.Common.Wpf.Converters
 {
     public class BoolToVisibilityConverter : ConverterMarkupExtensionBase<BoolToVisibilityConverter>
     {

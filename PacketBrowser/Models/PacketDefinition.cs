@@ -1,5 +1,5 @@
-﻿using System;
-using WpfCommons;
+﻿using siof.Common.Wpf;
+using System;
 
 namespace PacketBrowser.Models
 {

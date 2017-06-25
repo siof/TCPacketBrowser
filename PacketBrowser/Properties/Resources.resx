@@ -150,4 +150,10 @@ Regex - searching is done checking if packet matches given regex</value>
   <data name="STR_SimpleContainsDesc" xml:space="preserve">
     <value>Searching is done checking if packet contains given text</value>
   </data>
+  <data name="STR_HeaderSearchWatermark" xml:space="preserve">
+    <value>Search in header ...</value>
+  </data>
+  <data name="STR_SearchWatermark" xml:space="preserve">
+    <value>Search ...</value>
+  </data>
 </root>
