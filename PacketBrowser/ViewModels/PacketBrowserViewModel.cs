@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
+using PacketBrowser.Enums;
 using PacketBrowser.Models;
+using siof.Common;
 using siof.Common.Extensions;
 using siof.Common.Wpf;
 using System;
@@ -16,7 +18,7 @@ using System.Windows.Input;
 
 namespace PacketBrowser.ViewModels
 {
-    public class PacketBrowserViewModel : ViewModelBase
+    public class PacketBrowserViewModel: ViewModelBase
     {
         private string _headerSearchText;
         private string _searchText;

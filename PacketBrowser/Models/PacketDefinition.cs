@@ -1,9 +1,10 @@
-﻿using siof.Common.Wpf;
+﻿using PacketBrowser.Enums;
+using siof.Common.Wpf;
 using System;
 
 namespace PacketBrowser.Models
 {
-    public class PacketDefinition : ViewModelBase
+    public class PacketDefinition: ViewModelBase
     {
         private PacketDirection _direction;
 

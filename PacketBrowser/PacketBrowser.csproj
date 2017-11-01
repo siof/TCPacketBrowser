@@ -62,6 +62,24 @@
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="siof.Common.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\siof.Common.Extensions.1.1.1\lib\net452\siof.Common.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="siof.Common.Helpers.ReaderWriterLock, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\siof.Common.Helpers.ReaderWriterLock.1.0.1\lib\net452\siof.Common.Helpers.ReaderWriterLock.dll</HintPath>
+    </Reference>
+    <Reference Include="siof.Common.NotifyObject, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\siof.Common.NotifyObject.1.0.2\lib\net40\siof.Common.NotifyObject.dll</HintPath>
+    </Reference>
+    <Reference Include="siof.Common.RelayCommand, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\siof.Common.RelayCommand.1.0.0\lib\net40\siof.Common.RelayCommand.dll</HintPath>
+    </Reference>
+    <Reference Include="siof.Common.Wpf, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\siof.Common.Wpf.1.0.1\lib\net452\siof.Common.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="siof.Common.Wpf.DispatchedObservableCollection, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\siof.Common.Wpf.DispatchedObservableCollection.1.0.2\lib\net452\siof.Common.Wpf.DispatchedObservableCollection.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -86,8 +104,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\PacketDefinition.cs" />
-    <Compile Include="Models\PacketDirection.cs" />
-    <Compile Include="Models\SearchMode.cs" />
+    <Compile Include="Enums\PacketDirection.cs" />
+    <Compile Include="Enums\SearchMode.cs" />
     <Compile Include="ViewModels\PacketBrowserViewModel.cs" />
     <Compile Include="Views\PacketBrowserView.xaml.cs">
       <DependentUpon>PacketBrowserView.xaml</DependentUpon>
@@ -140,20 +158,6 @@
   <ItemGroup />
   <ItemGroup>
     <Resource Include="browserIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Deps\siof.Common.Extensions\Common.Extensions\Common.Extensions.csproj">
-      <Project>{889cb268-1c0c-4be1-9141-44f451d71e8b}</Project>
-      <Name>Common.Extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Deps\siof.Common.Wpf\Common.Wpf\Common.Wpf.csproj">
-      <Project>{30d28eef-f1d7-4b43-b3f2-87b12af74802}</Project>
-      <Name>Common.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Deps\siof.Common\Common\Common.csproj">
-      <Project>{9b4d02aa-548a-4b81-90c0-d442c6d1e8c6}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-﻿namespace PacketBrowser.Models
+﻿namespace PacketBrowser.Enums
 {
     public enum SearchMode
     {

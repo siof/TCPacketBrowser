@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:PacketBrowser.Views"
 
-             xmlns:models="clr-namespace:PacketBrowser.Models"
-             xmlns:conv="clr-namespace:siof.Common.Wpf.Converters;assembly=Common.Wpf"
+             xmlns:conv="http://siof.pl/xaml/converters"
+             xmlns:beh="http://siof.pl/xaml/behaviours"
+             xmlns:enums="clr-namespace:PacketBrowser.Enums"
              xmlns:res="clr-namespace:PacketBrowser.Properties"
-             xmlns:beh="clr-namespace:siof.Common.Wpf.Behaviours;assembly=Common.Wpf"
              xmlns:c="http://metro.mahapps.com/winfx/xaml/controls"
 
              mc:Ignorable="d"
@@ -113,7 +113,7 @@
                 c:TextBoxHelper.ClearTextButton="True"
                 ToolTip="{x:Static res:Resources.STR_HeaderSearchTooltip}"
                 Text="{Binding HeaderSearchText, UpdateSourceTrigger=PropertyChanged}"
-                Visibility="{Binding SearchingMode, Converter={conv:EqualsToVisibilityConverter}, ConverterParameter={x:Static models:SearchMode.PacketContains}}">
+                Visibility="{Binding SearchingMode, Converter={conv:EqualsToVisibilityConverter}, ConverterParameter={x:Static enums:SearchMode.PacketContains}}">
                 <TextBox.InputBindings>
                     <KeyBinding Key="Return" Command="{Binding SearchCommand}" />
                 </TextBox.InputBindings>
