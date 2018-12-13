@@ -156,4 +156,22 @@ Regex - searching is done checking if packet matches given regex</value>
   <data name="STR_SearchWatermark" xml:space="preserve">
     <value>Search ...</value>
   </data>
+  <data name="STR_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="STR_SearchAndRemoveMatchingPackets" xml:space="preserve">
+    <value>Search and remove matching packets</value>
+  </data>
+  <data name="STR_SearchingAndRemovingMatchingPackets" xml:space="preserve">
+    <value>Searching and remove matching packets ...</value>
+  </data>
+  <data name="STR_Removed01" xml:space="preserve">
+    <value>Removed {0}/{1}</value>
+  </data>
+  <data name="STR_Searching" xml:space="preserve">
+    <value>Searching ...</value>
+  </data>
+  <data name="STR_Removing" xml:space="preserve">
+    <value>Removing</value>
+  </data>
 </root>

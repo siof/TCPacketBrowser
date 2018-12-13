@@ -19,7 +19,7 @@ using System.Linq;
 
 namespace PacketBrowser.ViewModels
 {
-    public class PacketBrowserViewModel: ViewModelBase
+    public class PacketBrowserViewModel : ViewModelBase
     {
         private string _headerSearchText;
         private string _searchText;
@@ -36,18 +36,12 @@ namespace PacketBrowser.ViewModels
 
         public Array AvailableSearchModes
         {
-            get
-            {
-                return Enum.GetValues(typeof(SearchMode));
-            }
+            get { return Enum.GetValues(typeof(SearchMode)); }
         }
 
         public SearchMode SearchingMode
         {
-            get
-            {
-                return _searchingMode;
-            }
+            get { return _searchingMode; }
 
             set
             {
@@ -61,10 +55,7 @@ namespace PacketBrowser.ViewModels
 
         public string HeaderSearchText
         {
-            get
-            {
-                return _headerSearchText;
-            }
+            get { return _headerSearchText; }
 
             set
             {
@@ -78,10 +69,7 @@ namespace PacketBrowser.ViewModels
 
         public string SearchText
         {
-            get
-            {
-                return _searchText;
-            }
+            get { return _searchText; }
 
             set
             {
@@ -99,10 +87,7 @@ namespace PacketBrowser.ViewModels
 
         public PacketDefinition SelectedPacket
         {
-            get
-            {
-                return _selectedPacket;
-            }
+            get { return _selectedPacket; }
 
             set
             {
@@ -121,45 +106,47 @@ namespace PacketBrowser.ViewModels
                 switch (SearchingMode)
                 {
                     case SearchMode.SimpleContains:
-                        {
-                            if (SearchText.IsEmptyOrWhiteSpace())
-                                return true;
+                    {
+                        if (SearchText.IsEmptyOrWhiteSpace())
+                            return true;
 
-                            if (definition.ToString().ToLower().Contains(SearchText.ToLower()))
-                                return true;
+                        if (definition.ToString().ToLower().Contains(SearchText.ToLower()))
+                            return true;
 
-                            break;
-                        }
+                        break;
+                    }
 
                     case SearchMode.PacketContains:
+                    {
+                        if (HeaderSearchText.IsEmptyOrWhiteSpace())
+                            return true;
+
+                        if (SearchText.IsEmptyOrWhiteSpace())
+                            return true;
+
+                        if (definition.PacketHeader.ToLower().Contains(HeaderSearchText.ToLower()))
                         {
-                            if (HeaderSearchText.IsEmptyOrWhiteSpace())
+                            if (SearchText.IsEmptyOrWhiteSpace() || definition.PacketData.ToLower().Contains(SearchText.ToLower()))
                                 return true;
-
-                            if (SearchText.IsEmptyOrWhiteSpace())
-                                return true;
-
-                            if (definition.PacketHeader.ToLower().Contains(HeaderSearchText.ToLower()))
-                            {
-                                if (SearchText.IsEmptyOrWhiteSpace() || definition.PacketData.ToLower().Contains(SearchText.ToLower()))
-                                    return true;
-                            }
-
-                            break;
                         }
+
+                        break;
+                    }
 
                     case SearchMode.Regex:
+                    {
+                        Regex regex = new Regex(SearchText);
+                        try
                         {
-                            Regex regex = new Regex(SearchText);
-                            try
-                            {
-                                return regex.IsMatch(definition.ToString());
-                            }
-                            catch (Exception)
-                            {
-                            }
-                            break;
+                            return regex.IsMatch(definition.ToString());
                         }
+                        catch (Exception)
+                        {
+                            //ignored
+                        }
+
+                        break;
+                    }
                 }
 
                 return false;
@@ -178,6 +165,7 @@ namespace PacketBrowser.ViewModels
                 {
                     _searchCommand = new RelayCommand<object>(param => SearchCommandExecute(param), param => SearchCommandCanExecute(param));
                 }
+
                 return _searchCommand;
             }
         }
@@ -188,6 +176,51 @@ namespace PacketBrowser.ViewModels
         }
 
         private bool SearchCommandCanExecute(object param)
+        {
+            return !IsLoading;
+        }
+
+        #endregion Search
+
+        #region SearchDelete
+
+        private RelayCommand<object> _searchAndDeleteCommand;
+
+        public ICommand SearchDeleteCommand
+        {
+            get
+            {
+                if (_searchAndDeleteCommand == null)
+                {
+                    _searchAndDeleteCommand = new RelayCommand<object>(param => SearchAndDeleteCommandExecute(param),
+                        param => SearchAndDeleteCommandCanExecute(param));
+                }
+
+                return _searchAndDeleteCommand;
+            }
+        }
+
+        private void SearchAndDeleteCommandExecute(object param)
+        {
+            IsLoading = true;
+            IsLoadingInfoText = Properties.Resources.STR_Searching;
+
+            Task.Run(() =>
+                {
+                    var total = PacketDefinitions.Count;
+                    var notFound = PacketDefinitions.WhereSync(_ => !PacketListFilter(_)).ToList();
+                    IsLoadingInfoText = Properties.Resources.STR_Removing + " " + (total - notFound.Count);
+                    PacketDefinitions.ClearAndAddRange(notFound);
+                    SearchText = "";
+                })
+                .ContinueWith(_ =>
+                {
+                    IsLoading = false;
+                    PacketDefinitions.CurrentDispatcher.BeginInvoke(new Action(() => PacketDefinitionsView.Refresh()));
+                });
+        }
+
+        private bool SearchAndDeleteCommandCanExecute(object param)
         {
             return !IsLoading;
         }
@@ -210,9 +243,11 @@ namespace PacketBrowser.ViewModels
             {
                 if (_loadPacketsCommand == null)
                 {
-                    _loadPacketsCommand = new RelayCommand<object>(param => LoadPacketCommandExecute(param), param => LoadPacketCommandCanExecute(param));
+                    _loadPacketsCommand =
+                        new RelayCommand<object>(param => LoadPacketCommandExecute(param), param => LoadPacketCommandCanExecute(param));
                     _loadPacketsCommand.UpdateCanExecuteState();
                 }
+
                 return _loadPacketsCommand;
             }
         }
@@ -300,23 +335,27 @@ namespace PacketBrowser.ViewModels
                                     switch (mode)
                                     {
                                         case StreamMode.Header:
-                                            {
-                                                var data = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                                                definition.Direction = data[0].Trim(':') == "ServerToClient" ? PacketDirection.ServerToClient : PacketDirection.ClientToServer;
-                                                definition.PacketName = data[1];
-                                                definition.PacketHash = data[2].Trim('(').Trim(')');
-                                                definition.Length = int.Parse(data[4]);
-                                                definition.ConnIdx = int.Parse(data[6]);
-                                                definition.Time = DateTime.ParseExact(data[8], "mm/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture) + TimeSpan.Parse(data[9]);
-                                                definition.Number = int.Parse(data[11]);
-                                                mode = StreamMode.Data;
-                                                break;
-                                            }
+                                        {
+                                            var data = line.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                                            definition.Direction = data[0].Trim(':') == "ServerToClient"
+                                                ? PacketDirection.ServerToClient
+                                                : PacketDirection.ClientToServer;
+                                            definition.PacketName = data[1];
+                                            definition.PacketHash = data[2].Trim('(').Trim(')');
+                                            definition.Length = int.Parse(data[4]);
+                                            definition.ConnIdx = int.Parse(data[6]);
+                                            definition.Time =
+                                                DateTime.ParseExact(data[8], "mm/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture) +
+                                                TimeSpan.Parse(data[9]);
+                                            definition.Number = int.Parse(data[11]);
+                                            mode = StreamMode.Data;
+                                            break;
+                                        }
                                         case StreamMode.Data:
-                                            {
-                                                dataBuilder.AppendLine(line);
-                                                break;
-                                            }
+                                        {
+                                            dataBuilder.AppendLine(line);
+                                            break;
+                                        }
                                     }
                                 }
 

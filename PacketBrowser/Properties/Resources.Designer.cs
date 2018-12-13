@@ -19,7 +19,7 @@ namespace PacketBrowser.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -57,6 +57,15 @@ namespace PacketBrowser.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string STR_Delete {
+            get {
+                return ResourceManager.GetString("STR_Delete", resourceCulture);
             }
         }
         
@@ -133,11 +142,56 @@ namespace PacketBrowser.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Removed {0}/{1}.
+        /// </summary>
+        public static string STR_Removed01 {
+            get {
+                return ResourceManager.GetString("STR_Removed01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing.
+        /// </summary>
+        public static string STR_Removing {
+            get {
+                return ResourceManager.GetString("STR_Removing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string STR_Search {
             get {
                 return ResourceManager.GetString("STR_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search and remove matching packets.
+        /// </summary>
+        public static string STR_SearchAndRemoveMatchingPackets {
+            get {
+                return ResourceManager.GetString("STR_SearchAndRemoveMatchingPackets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching ....
+        /// </summary>
+        public static string STR_Searching {
+            get {
+                return ResourceManager.GetString("STR_Searching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching and remove matching packets ....
+        /// </summary>
+        public static string STR_SearchingAndRemovingMatchingPackets {
+            get {
+                return ResourceManager.GetString("STR_SearchingAndRemovingMatchingPackets", resourceCulture);
             }
         }
         
