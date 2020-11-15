@@ -48,7 +48,7 @@ namespace PacketBrowser.ViewModels
                 if (_searchingMode != value)
                 {
                     _searchingMode = value;
-                    OnPropertyChanged(() => SearchingMode);
+                    OnPropertyChanged(nameof(SearchingMode));
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace PacketBrowser.ViewModels
                 if (_headerSearchText != value)
                 {
                     _headerSearchText = value;
-                    OnPropertyChanged(() => HeaderSearchText);
+                    OnPropertyChanged(nameof(HeaderSearchText));
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace PacketBrowser.ViewModels
                 if (_searchText != value)
                 {
                     _searchText = value;
-                    OnPropertyChanged(() => SearchText);
+                    OnPropertyChanged(nameof(SearchText));
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace PacketBrowser.ViewModels
                 if (_selectedPacket != value)
                 {
                     _selectedPacket = value;
-                    OnPropertyChanged(() => SelectedPacket);
+                    OnPropertyChanged(nameof(SelectedPacket));
                 }
             }
         }

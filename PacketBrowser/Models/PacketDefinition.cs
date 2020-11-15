@@ -10,17 +10,14 @@ namespace PacketBrowser.Models
 
         public PacketDirection Direction
         {
-            get
-            {
-                return _direction;
-            }
+            get => _direction;
 
             set
             {
                 if (_direction != value)
                 {
                     _direction = value;
-                    OnPropertyChanged(() => Direction);
+                    OnPropertyChanged(nameof(Direction));
                 }
             }
         }
@@ -29,17 +26,14 @@ namespace PacketBrowser.Models
 
         public string PacketName
         {
-            get
-            {
-                return _packetName;
-            }
+            get => _packetName;
 
             set
             {
                 if (_packetName != value)
                 {
                     _packetName = value;
-                    OnPropertyChanged(() => PacketName);
+                    OnPropertyChanged(nameof(PacketName));
                 }
             }
         }
@@ -48,17 +42,14 @@ namespace PacketBrowser.Models
 
         public string PacketHash
         {
-            get
-            {
-                return _packetHash;
-            }
+            get => _packetHash;
 
             set
             {
                 if (_packetHash != value)
                 {
                     _packetHash = value;
-                    OnPropertyChanged(() => PacketHash);
+                    OnPropertyChanged(nameof(PacketHash));
                 }
             }
         }
@@ -67,17 +58,14 @@ namespace PacketBrowser.Models
 
         public int Length
         {
-            get
-            {
-                return _length;
-            }
+            get => _length;
 
             set
             {
                 if (_length != value)
                 {
                     _length = value;
-                    OnPropertyChanged(() => Length);
+                    OnPropertyChanged(nameof(Length));
                 }
             }
         }
@@ -86,17 +74,14 @@ namespace PacketBrowser.Models
 
         public int ConnIdx
         {
-            get
-            {
-                return _connIdx;
-            }
+            get => _connIdx;
 
             set
             {
                 if (_connIdx != value)
                 {
                     _connIdx = value;
-                    OnPropertyChanged(() => ConnIdx);
+                    OnPropertyChanged(nameof(ConnIdx));
                 }
             }
         }
@@ -105,17 +90,14 @@ namespace PacketBrowser.Models
 
         public DateTime Time
         {
-            get
-            {
-                return _time;
-            }
+            get => _time;
 
             set
             {
                 if (_time != value)
                 {
                     _time = value;
-                    OnPropertyChanged(() => Time);
+                    OnPropertyChanged(nameof(Time));
                 }
             }
         }
@@ -124,17 +106,14 @@ namespace PacketBrowser.Models
 
         public int Number
         {
-            get
-            {
-                return _number;
-            }
+            get => _number;
 
             set
             {
                 if (_number != value)
                 {
                     _number = value;
-                    OnPropertyChanged(() => Number);
+                    OnPropertyChanged(nameof(Number));
                 }
             }
         }
@@ -143,33 +122,23 @@ namespace PacketBrowser.Models
 
         public string PacketData
         {
-            get
-            {
-                return _packetData;
-            }
+            get => _packetData;
 
             set
             {
                 if (_packetData != value)
                 {
                     _packetData = value;
-                    OnPropertyChanged(() => PacketData);
+                    OnPropertyChanged(nameof(PacketData));
                 }
             }
         }
 
-        public string PacketHeader
-        {
-            get
-            {
-                return string.Format("{0}: {1} ({2}) Length: {3} ConnIdx: {4} Time: {5} Number: {6}", Direction, PacketName, PacketHash, Length, ConnIdx, Time, Number);
-            }
-        }
+        public string PacketHeader => $"{Direction}: {PacketName} ({PacketHash}) Length: {Length} ConnIdx: {ConnIdx} Time: {Time} Number: {Number}";
 
         public override string ToString()
         {
-            return string.Format("{0}{1}{2}",
-                PacketHeader, Environment.NewLine, PacketData);
+            return $"{PacketHeader}{Environment.NewLine}{PacketData}";
         }
     }
 }

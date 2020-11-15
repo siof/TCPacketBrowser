@@ -29,7 +29,7 @@
                             <Grid
                                 Visibility="{Binding IsLoading, Converter={conv:BoolToVisibilityConverter}}">
                                 <Grid
-                                    Background="{StaticResource WhiteBrush}"
+                                    Background="{StaticResource MahApps.Brushes.ThemeBackground}"
                                     Opacity="0.4" />
                                 <StackPanel
                                     HorizontalAlignment="Stretch"
